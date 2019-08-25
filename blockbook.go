@@ -84,6 +84,8 @@ var (
 
 	// resync mempool at least each resyncMempoolPeriodMs (could be more often if invoked by message from ZeroMQ)
 	resyncMempoolPeriodMs = flag.Int("resyncmempoolperiod", 60017, "resync mempool period in milliseconds")
+
+	spendingIndex = flag.Bool("spendingindex", false, "if true, create index of spending transactions")
 )
 
 var (
@@ -175,7 +177,7 @@ func mainWithExitCode() int {
 		return exitCodeFatal
 	}
 
-	index, err = db.NewRocksDB(*dbPath, *dbCache, *dbMaxOpenFiles, chain.GetChainParser(), metrics)
+	index, err = db.NewRocksDB(*dbPath, *dbCache, *dbMaxOpenFiles, chain.GetChainParser(), metrics, *spendingIndex)
 	if err != nil {
 		glog.Error("rocksDB: ", err)
 		return exitCodeFatal

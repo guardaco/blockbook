@@ -52,7 +52,8 @@ type InternalState struct {
 	CoinLabel    string `json:"coinLabel"`
 	Host         string `json:"host"`
 
-	DbState uint32 `json:"dbState"`
+	DbState       uint32 `json:"dbState"`
+	SpendingIndex bool   `json:"spendingIndex"`
 
 	LastStore time.Time `json:"lastStore"`
 

@@ -99,6 +99,19 @@ func (w *Worker) setSpendingTxToVout(vout *Vout, txid string, height uint32) err
 
 // GetSpendingTxid returns transaction id of transaction that spent given output
 func (w *Worker) GetSpendingTxid(txid string, n int) (string, error) {
+	if w.db.HasSpendingIndex() {
+		tsp, err := w.db.GetTxAddresses(txid)
+		if err != nil {
+			return "", err
+		} else if tsp == nil {
+			glog.Warning("DB inconsistency:  tx ", txid, ": not found in txAddresses")
+			return "", NewAPIError(fmt.Sprintf("Txid %v not found", txid), false)
+		}
+		if n >= len(tsp.Outputs) || n < 0 {
+			return "", NewAPIError(fmt.Sprintf("Passed incorrect vout index %v for tx %v, len vout %v", n, txid, len(tsp.Outputs)), false)
+		}
+		return tsp.Outputs[n].SpentTxid, nil
+	}
 	start := time.Now()
 	tx, err := w.GetTransaction(txid, false, false)
 	if err != nil {
@@ -239,10 +252,16 @@ func (w *Worker) GetTransactionFromBchainTx(bchainTx *bchain.Tx, height int, spe
 		}
 		if ta != nil {
 			vout.Spent = ta.Outputs[i].Spent
-			if spendingTxs && vout.Spent {
-				err = w.setSpendingTxToVout(vout, bchainTx.Txid, uint32(height))
-				if err != nil {
-					glog.Errorf("setSpendingTxToVout error %v, %v, output %v", err, vout.AddrDesc, vout.N)
+			if vout.Spent {
+				if w.db.HasSpendingIndex() {
+					vout.SpentTxID = ta.Outputs[i].SpentTxid
+					vout.SpentIndex = int(ta.Outputs[i].SpentIndex)
+					vout.SpentHeight = int(ta.Outputs[i].SpentHeight)
+				} else if spendingTxs {
+					err = w.setSpendingTxToVout(vout, bchainTx.Txid, height)
+					if err != nil {
+						glog.Errorf("setSpendingTxToVout error %v, %v, output %v", err, vout.AddrDesc, vout.N)
+					}
 				}
 			}
 		}
@@ -576,6 +595,11 @@ func (w *Worker) txFromTxAddress(txid string, ta *db.TxAddresses, bi *db.BlockIn
 			glog.Errorf("tai.Addresses error %v, tx %v, output %v, tao %+v", err, txid, i, tao)
 		}
 		vout.Spent = tao.Spent
+		if w.db.HasSpendingIndex() {
+			vout.SpentTxID = tao.SpentTxid
+			vout.SpentIndex = int(tao.SpentIndex)
+			vout.SpentHeight = int(tao.SpentHeight)
+		}
 	}
 	// for coinbase transactions valIn is 0
 	feesSat.Sub(&valInSat, &valOutSat)
