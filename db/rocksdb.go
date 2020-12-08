@@ -761,6 +761,10 @@ func (d *RocksDB) processAddressesBitcoinType(block *bchain.Block, addresses add
 			if err != nil {
 				// do not process inputs without input txid
 				if err == bchain.ErrTxidMissing {
+					if tx.Vin[i].ScriptSig.Hex == "" {
+						tx.Vin[i].ScriptSig.Hex = tx.Vin[i].Coinbase
+					}
+					tai.AddrDesc = d.chainParser.GetAddrDescForUnknownInput(tx, i)
 					continue
 				}
 				return err

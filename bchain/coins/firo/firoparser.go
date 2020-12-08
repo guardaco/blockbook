@@ -3,12 +3,14 @@ package firo
 import (
 	"bytes"
 	"encoding/binary"
+	"encoding/hex"
 	"encoding/json"
 	"io"
 
 	"github.com/martinboehm/btcd/chaincfg/chainhash"
 	"github.com/martinboehm/btcd/wire"
 	"github.com/martinboehm/btcutil/chaincfg"
+	"github.com/martinboehm/btcutil/txscript"
 	"github.com/trezor/blockbook/bchain"
 	"github.com/trezor/blockbook/bchain/coins/btc"
 )
@@ -126,6 +128,18 @@ func (p *FiroParser) GetAddressesFromAddrDesc(addrDesc bchain.AddressDescriptor)
 	}
 
 	return p.OutputScriptToAddressesFunc(addrDesc)
+}
+
+// GetAddrDescForUnknownInput returns nil AddressDescriptor
+func (p *FiroParser) GetAddrDescForUnknownInput(tx *bchain.Tx, input int) bchain.AddressDescriptor {
+	ad, err := hex.DecodeString(tx.Vin[input].ScriptSig.Hex)
+	if err != nil {
+		return ad
+	}
+	// convert possible P2PK script to P2PKH
+	// so that all transactions by given public key are indexed together
+	ad, err = txscript.ConvertP2PKtoP2PKH(p.Params.Base58CksumHasher, ad)
+	return ad
 }
 
 // PackTx packs transaction to byte array using protobuf

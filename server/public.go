@@ -453,6 +453,7 @@ func (s *PublicServer) parseTemplates() []*template.Template {
 		"isOwnAddress":             isOwnAddress,
 		"isOwnAddresses":           isOwnAddresses,
 		"toJSON":                   toJSON,
+		"addressEquals":            addressEquals,
 	}
 	var createTemplate func(filenames ...string) *template.Template
 	if s.debug {
@@ -526,6 +527,10 @@ func toJSON(data interface{}) string {
 		return ""
 	}
 	return string(json)
+}
+
+func addressEquals(addresses []string, value string) bool {
+	return len(addresses) == 1 && addresses[0] == value
 }
 
 // for now return the string as it is

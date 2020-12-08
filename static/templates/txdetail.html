@@ -25,7 +25,13 @@
                                 {{- else -}}
                                 <span class="tx-addr">{{- if $vin.Hex -}}Unparsed address{{- else -}}No Inputs (Newly Generated Coins){{- end -}}</span>
                                 {{- end -}}{{- if $vin.Addresses -}}
-                                <span class="tx-amt">{{formatAmount $vin.ValueSat}} {{$cs}}</span>
+                                <span class="tx-amt">
+                                    {{- if addressEquals $vin.Addresses "LelantusJoinSplit" -}}
+                                        Hidden
+                                    {{- else -}}
+                                        {{formatAmount $vin.ValueSat}} {{$cs}}
+                                    {{- end -}}
+                                </span>
                                 {{- end -}}
                             </td>
                         </tr>
@@ -58,8 +64,12 @@
                                 <span class="tx-addr">Unparsed address</span>
                                 {{- end -}}
                                 <span class="tx-amt">
-                                    {{formatAmount $vout.ValueSat}} {{$cs}} {{if $vout.Spent}}<a class="text-danger" href="{{if $vout.SpentTxID}}/tx/{{$vout.SpentTxID}}{{else}}/spending/{{$tx.Txid}}/{{$vout.N}}{{end}}" title="Spent">➡</a>{{else -}}
-                                    <span class="text-success" title="Unspent"> <b>×</b></span>
+                                    {{- if addressEquals $vout.Addresses "LelantusJMint" -}}
+                                        Hidden
+                                    {{- else -}}
+                                        {{formatAmount $vout.ValueSat}} {{$cs}} {{if $vout.Spent}}<a class="text-danger" href="{{if $vout.SpentTxID}}/tx/{{$vout.SpentTxID}}{{else}}/spending/{{$tx.Txid}}/{{$vout.N}}{{end}}" title="Spent">➡</a>{{else -}}
+                                        <span class="text-success" title="Unspent"> <b>×</b></span>
+                                        {{- end -}}
                                     {{- end -}}
                                 </span>
                             </td>
