@@ -10,23 +10,23 @@ import (
 	"time"
 
 	"github.com/juju/errors"
-	"github.com/trezor/blockbook/bchain/coins/aryacoin"
 	"github.com/trezor/blockbook/bchain"
+	"github.com/trezor/blockbook/bchain/coins/aryacoin"
 	"github.com/trezor/blockbook/bchain/coins/bch"
 	"github.com/trezor/blockbook/bchain/coins/bellcoin"
+	"github.com/trezor/blockbook/bchain/coins/bitcoinvault"
 	"github.com/trezor/blockbook/bchain/coins/bitcore"
 	"github.com/trezor/blockbook/bchain/coins/bitzeny"
 	"github.com/trezor/blockbook/bchain/coins/btc"
 	"github.com/trezor/blockbook/bchain/coins/btg"
-	"github.com/trezor/blockbook/bchain/coins/creamcoin"
 	"github.com/trezor/blockbook/bchain/coins/cpuchain"
+	"github.com/trezor/blockbook/bchain/coins/creamcoin"
 	"github.com/trezor/blockbook/bchain/coins/dash"
 	"github.com/trezor/blockbook/bchain/coins/dcr"
 	"github.com/trezor/blockbook/bchain/coins/deeponion"
 	"github.com/trezor/blockbook/bchain/coins/digibyte"
 	"github.com/trezor/blockbook/bchain/coins/divi"
 	"github.com/trezor/blockbook/bchain/coins/dogecoin"
-	"github.com/trezor/blockbook/bchain/coins/bitcoinvault"
 	"github.com/trezor/blockbook/bchain/coins/ecash"
 	"github.com/trezor/blockbook/bchain/coins/eth"
 	"github.com/trezor/blockbook/bchain/coins/firo"
@@ -34,8 +34,8 @@ import (
 	"github.com/trezor/blockbook/bchain/coins/fujicoin"
 	"github.com/trezor/blockbook/bchain/coins/gamecredits"
 	"github.com/trezor/blockbook/bchain/coins/grs"
-	"github.com/trezor/blockbook/bchain/coins/koto"
 	"github.com/trezor/blockbook/bchain/coins/kmd"
+	"github.com/trezor/blockbook/bchain/coins/koto"
 	"github.com/trezor/blockbook/bchain/coins/liquid"
 	"github.com/trezor/blockbook/bchain/coins/litecoin"
 	"github.com/trezor/blockbook/bchain/coins/monacoin"
@@ -48,17 +48,17 @@ import (
 	"github.com/trezor/blockbook/bchain/coins/polis"
 	"github.com/trezor/blockbook/bchain/coins/qtum"
 	"github.com/trezor/blockbook/bchain/coins/ravencoin"
+	"github.com/trezor/blockbook/bchain/coins/rdd"
 	"github.com/trezor/blockbook/bchain/coins/ritocoin"
 	"github.com/trezor/blockbook/bchain/coins/snowgem"
 	"github.com/trezor/blockbook/bchain/coins/trezarcoin"
 	"github.com/trezor/blockbook/bchain/coins/unobtanium"
 	"github.com/trezor/blockbook/bchain/coins/verge"
-	"github.com/trezor/blockbook/bchain/coins/rdd"
 	"github.com/trezor/blockbook/bchain/coins/vertcoin"
 	"github.com/trezor/blockbook/bchain/coins/viacoin"
 	"github.com/trezor/blockbook/bchain/coins/vipstarcoin"
-	"github.com/trezor/blockbook/bchain/coins/zec"
 	"github.com/trezor/blockbook/bchain/coins/yec"
+	"github.com/trezor/blockbook/bchain/coins/zec"
 	"github.com/trezor/blockbook/common"
 )
 
@@ -84,6 +84,7 @@ func init() {
 	BlockChainFactories["Ubiq"] = eth.NewEthereumRPC
 	BlockChainFactories["Ubiq Testnet"] = eth.NewEthereumRPC
 	BlockChainFactories["Expanse"] = eth.NewEthereumRPC
+	BlockChainFactories["Polygon"] = eth.NewEthereumRPC
 	BlockChainFactories["Bcash"] = bch.NewBCashRPC
 	BlockChainFactories["BcashABC"] = bch.NewBCashRPC
 	BlockChainFactories["Bcash Testnet"] = bch.NewBCashRPC

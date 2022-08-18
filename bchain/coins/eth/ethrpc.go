@@ -31,13 +31,15 @@ const (
 	TestNet EthereumNet = 3
 	// TestNetGoerli is Goerli test network
 	TestNetGoerli EthereumNet = 5
-	// 	MainNetUbiq is Ubiq prodoction network
+	// 	MainNetUbiq is Ubiq production network
 	MainNetUbiq EthereumNet = 8
 	// TestNetUbiq is Ubiq test network
 	TestNetUbiq EthereumNet = 9
+	// 	MainNetPolygon is Polygon production network
+	MainNetPolygon EthereumNet = 137
 )
 
-var MainNetIds = map[int]bool{1: true, 8: true}
+var MainNetIds = map[int]bool{1: true, 8: true, 137: true}
 
 // Configuration represents json config file
 type Configuration struct {
@@ -177,6 +179,9 @@ func (b *EthereumRPC) Initialize() error {
 		b.Network = "testnet"
 		break
 	case MainNetUbiq:
+		b.Testnet = false
+		b.Network = "livenet"
+	case MainNetPolygon:
 		b.Testnet = false
 		b.Network = "livenet"
 	default:
