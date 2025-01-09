@@ -1,10 +1,8 @@
-@import "TTHoves/TTHoves.css";
-
 * {
     margin: 0;
     padding: 0;
     outline: none;
-    font-family: "TT Hoves", -apple-system, "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+    font-family: "Poppins", -apple-system, "Segoe UI", "Helvetica Neue", Arial, sans-serif;
 }
 
 html,
